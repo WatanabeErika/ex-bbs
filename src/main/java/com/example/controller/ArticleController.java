@@ -64,4 +64,13 @@ public class ArticleController {
 		commentrepository.insert(comment);
 		return "redirect:/ex";
 	}
+	
+//	記事削除
+	  @RequestMapping("/deleteArticle") 
+	  public String deleteArticle(Article article,Comment comment) {
+		 commentrepository.deleteByArticleId(comment.getArticleId());
+		 articlerepository.deleteById(article.getId());
+		 return "redirect:/ex";
+	 }
+	
 }
