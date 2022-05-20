@@ -42,10 +42,12 @@ public class CommentRepository {
 		template.update(sql, param);
 	}
 
-//	コメント削除
-	public void deleteByArticleId(int articleId) {
-		String sql="DELETE FROM comments WHERE article_id=:articleId";
-		SqlParameterSource param=new MapSqlParameterSource().addValue("articleId", articleId);
-		template.update(sql, param);
-	}
+//	初級コメント削除
+//	public void deleteByArticleId(int articleId) {
+//		String sql="DELETE FROM comments WHERE article_id=:articleId";
+//		SqlParameterSource param=new MapSqlParameterSource().addValue("articleId", articleId);
+//		template.update(sql, param);
+//	}
+	
+	
 }

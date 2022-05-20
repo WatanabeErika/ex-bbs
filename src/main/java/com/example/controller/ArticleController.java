@@ -6,6 +6,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -62,7 +64,11 @@ public class ArticleController {
 	
 //	form使った記事投稿
 	@RequestMapping("/insertArticle")
-	public String insertArticle(ArticleForm articleForm) {
+	public String insertArticle(@Validated ArticleForm articleForm,BindingResult result,Model model) {
+		if(result.hasErrors()) {
+			return index(model);
+		}
+		
 		Article article=new Article();
 		BeanUtils.copyProperties(articleForm, article);
 		articlerepository.insert(article);
@@ -78,7 +84,10 @@ public class ArticleController {
 	
 //	form使ったコメント投稿
 	@RequestMapping("/insertComment")
-	public String insertComment(CommentForm commentForm) {
+	public String insertComment(@Validated CommentForm commentForm,BindingResult result,Model model) {
+		if(result.hasErrors()) {
+			return index(model);
+		}
 		Comment comment=new Comment();
 		BeanUtils.copyProperties(commentForm, comment);
 		comment.setArticleId(Integer.parseInt(commentForm.getArticleId()));
@@ -94,17 +103,5 @@ public class ArticleController {
 //		 return "redirect:/ex";
 //	 }
 	
-	 
-//	 form使った記事削除
-	  @RequestMapping("/deleteArticle") 
-	  public String deleteArticle(ArticleForm articleForm,CommentForm commentForm) {
-		 Article article=new Article();
-		 Comment comment=new Comment();
-		 BeanUtils.copyProperties(articleForm, article);
-		 BeanUtils.copyProperties(commentForm, comment);
-		 comment.setArticleId(Integer.parseInt(commentForm.getArticleId()));
-		 commentrepository.deleteByArticleId(comment.getArticleId());
-		 articlerepository.deleteById(article.getId());
-		 return "redirect:/ex";
-	 }
+	
 }
